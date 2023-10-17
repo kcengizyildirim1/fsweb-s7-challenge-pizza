@@ -1,0 +1,32 @@
+.product-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.product-props {
+    display: flex;
+    justify-content: space-between;
+    color: grey;
+    
+}
+
+.product-container p {
+    color: grey;
+    line-height: 1.5rem;
+    
+}
+
+#rate {
+    margin-left: 15rem;
+}
+
+#price {
+    font-size: 1.5rem;
+    color: black;
+}
+
+.product-container span {
+    margin: auto 0;
+}
+

@@ -1,0 +1,31 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: red;
+    padding: 1rem 0;
+    color: white;
+}
+
+.home-container h1{
+    margin-top:0;
+    padding-top:3rem;
+    text-align: center;
+    color:#ffffff;
+    font-size: 3rem;
+    font-family: 'Londrina Solid', cursive;
+}
+
+
+.navbar {
+  display: flex;
+  width: 30%;
+  margin: 1rem auto;
+  gap: 5px;
+}
+
+nav a{
+    text-decoration: none;
+    color: white;
+    
+}

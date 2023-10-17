@@ -1,0 +1,23 @@
+.success {
+    display: flex;
+    flex-direction: column;
+    background-color: red;
+    height: 100vh;
+    color: white;
+
+}
+
+.success h1 {
+    margin: 5rem auto;
+    height: 3rem;
+    font-family: 'Londrina Solid', cursive;
+    font-size: 3rem;
+}
+
+.text {
+    font-size: 5rem;
+    text-align: center;
+    margin: 10rem 0;
+    line-height: 1rem;
+}
+
