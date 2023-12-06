@@ -11,8 +11,8 @@ import Success from "./Pages/Success";
 const App = () => {
   const [order, setOrder] = useState([]);
 
-  const handleOrder = (order) => {
-    setOrder(order);
+  const handleOrder = (newOrder) => {
+    setOrder([...order, newOrder]);
   };
 
   useEffect(() => {

@@ -99,12 +99,12 @@ const OrderForm = (props) => {
       if (value) {
         setFormData((prevData) => ({
           ...prevData,
-          extraIngredient: [...prevData.extraIngredient, name],
+          extraIngredient: [...prevData.extraIngredient, value],
         }));
         setExtraIngredientPrice((prevPrice) => prevPrice + 5);
         yup
-          .reach(formSchema, "extraIngredient")
-          .validate([...formData.extraIngredient, name])
+          .reach(formSchema, name)
+          .validate(name)
           .then(() =>
             setErrors((prevErrors) => ({ ...prevErrors, extraIngredient: "" }))
           )
@@ -212,7 +212,9 @@ const OrderForm = (props) => {
                 <option value="Orta Hamur">Orta Hamur</option>
                 <option value="Kalin Hamur">Kalin Hamur</option>
               </select>
-              {errors.dough && <p className="error-message">{errors.dough}</p>}
+              {errors.dough && (
+                <p className="error-message">{errors.dough.message}</p>
+              )}
             </div>
           </div>
         </div>
@@ -221,14 +223,13 @@ const OrderForm = (props) => {
           <span>En Fazla 10 malzeme secebilirsiniz. 5₺</span>
           <div className="malzeme-wrapper">
             {extraIngredients.map((malz, i) => (
-              <div className="malzeme">
+              <div className="malzeme" key={i}>
                 <input
                   id={`ingredient-${i}`}
                   type="checkbox"
                   name={malz}
                   checked={formData.extraIngredient.includes(malz)}
                   onChange={handleChange}
-                  key={i}
                 />
                 <label className="size-margin" htmlFor={`ingredient-${i}`}>
                   {malz}

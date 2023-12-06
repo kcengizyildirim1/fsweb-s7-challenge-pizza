@@ -6,7 +6,7 @@ const Product = () => {
   return (
     <>
       {productData.map((urun, i) => (
-        <div className="product-container">
+        <div className="product-container" key={i}>
           <h3>{urun.title}</h3>
           <div className="product-props">
             <span id="price">
