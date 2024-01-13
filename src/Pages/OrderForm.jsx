@@ -41,8 +41,12 @@ const OrderForm = (props) => {
 
   const [formData, setFormData] = useState(initialData);
   const [isValid, setIsValid] = useState(false);
-  const [extraIngredientPrice, setExtraIngredientPrice] = useState(0);
-  const [errors, setErrors] = useState({ dough: "", extraIngredient: "" });
+  const [errors, setErrors] = useState({
+    dough: "",
+    extraIngredient: "",
+    size: "",
+  });
+  const [costExtra, setCostExtra] = useState(0);
 
   const history = useHistory();
 
@@ -63,11 +67,10 @@ const OrderForm = (props) => {
 
   useEffect(() => {
     const newFormEntries = { ...formData };
-    newFormEntries.extraIngredientPrice = extraIngredientPrice;
     newFormEntries.totalPrice =
-      newFormEntries.counter * productData[0].price + extraIngredientPrice;
+      newFormEntries.counter * productData[0].price + costExtra;
     setFormData(newFormEntries);
-  }, [extraIngredientPrice, formData.counter]);
+  }, [costExtra, formData.counter]);
 
   useEffect(() => {
     formSchema.isValid(formData).then((valid) => setIsValid(valid));
@@ -88,23 +91,21 @@ const OrderForm = (props) => {
     }
   };
 
-  const handleChange = (event) => {
-    const name = event.target.name;
+  const handleChange = (e) => {
+    const name = e.target.name;
     const value =
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
 
-    if (event.target.type === "checkbox") {
+    if (e.target.type === "checkbox") {
       if (value) {
         setFormData((prevData) => ({
           ...prevData,
-          extraIngredient: [...prevData.extraIngredient, value],
+          extraIngredient: [...prevData.extraIngredient, name],
         }));
-        setExtraIngredientPrice((prevPrice) => prevPrice + 5);
+        setCostExtra((prevPrice) => prevPrice + 5);
         yup
-          .reach(formSchema, name)
-          .validate(name)
+          .reach(formSchema, "extraIngredient")
+          .validate([...formData.extraIngredient, name])
           .then(() =>
             setErrors((prevErrors) => ({ ...prevErrors, extraIngredient: "" }))
           )
@@ -121,7 +122,7 @@ const OrderForm = (props) => {
             (item) => item !== name
           ),
         }));
-        setExtraIngredientPrice((prevPrice) => prevPrice - 5);
+        setCostExtra((prevPrice) => prevPrice - 5);
       }
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -212,9 +213,7 @@ const OrderForm = (props) => {
                 <option value="Orta Hamur">Orta Hamur</option>
                 <option value="Kalin Hamur">Kalin Hamur</option>
               </select>
-              {errors.dough && (
-                <p className="error-message">{errors.dough.message}</p>
-              )}
+              {errors.dough && <p className="error-message">{errors.dough}</p>}
             </div>
           </div>
         </div>
@@ -224,14 +223,15 @@ const OrderForm = (props) => {
           <div className="malzeme-wrapper">
             {extraIngredients.map((malz, i) => (
               <div className="malzeme" key={i}>
-                <input
-                  id={`ingredient-${i}`}
-                  type="checkbox"
-                  name={malz}
-                  checked={formData.extraIngredient.includes(malz)}
-                  onChange={handleChange}
-                />
                 <label className="size-margin" htmlFor={`ingredient-${i}`}>
+                  <input
+                    id={`ingredient-${i}`}
+                    type="checkbox"
+                    name={malz}
+                    checked={formData.extraIngredient.includes(malz)}
+                    onChange={handleChange}
+                    key={i}
+                  />
                   {malz}
                 </label>
               </div>
@@ -269,7 +269,7 @@ const OrderForm = (props) => {
             <h3>Siparis Toplami</h3>
             <div className="flex justify-bet total">
               <p>Secimler</p>
-              <p>{extraIngredientPrice}₺</p>
+              <p>{costExtra}₺</p>
             </div>
             <div className="flex justify-bet total">
               <p>
